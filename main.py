@@ -23,12 +23,20 @@ templates = Jinja2Templates(directory="templates")
 # Create OAuth2 session
 oauth = OAuth2Session(client_id, redirect_uri=redirect_uri)
 
-@app.get("/", response_class=HTMLResponse)
+# @app.get("/", response_class=HTMLResponse)
+# async def home(request: Request):
+#     # Step 1: Generate the authorization URL
+#     authorization_url, state = oauth.authorization_url(authorization_base_url)
+#     # Redirect the user to DeviantArt authorization page
+#     return templates.TemplateResponse("index.html", {"request": request, "authorization_url": authorization_url})
+
+@app.api_route("/", methods=["GET", "HEAD"], response_class=HTMLResponse)
 async def home(request: Request):
     # Step 1: Generate the authorization URL
     authorization_url, state = oauth.authorization_url(authorization_base_url)
     # Redirect the user to DeviantArt authorization page
     return templates.TemplateResponse("index.html", {"request": request, "authorization_url": authorization_url})
+
 
 @app.get("/callback")
 async def callback(request: Request):
